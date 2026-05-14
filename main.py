@@ -1,7 +1,18 @@
 from fastapi import FastAPI
 from database import get_connection
+from fastapi.middleware.cors import CORSMiddleware
+from database import get_connection
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 
 @app.get("/")
 def read_root():
@@ -68,3 +79,4 @@ def filter_events(event_type: str):
         })
     
     return {"results": formatted}
+    

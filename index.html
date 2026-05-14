@@ -1,0 +1,29 @@
+<!DOCTYPE html>>
+<html lang ="en">
+<head>
+    <meta charset = "UTF-8">
+    <meta name = "viewport" content = "width=device-width", initial-scale = 1.0">
+    <title>UCSD Club Events Hub</title>
+    <link rel = "stylesheet" href ="styles.css">
+</head>
+<body>
+    <h1>UCSD Club Events Hub</h1>
+    <p>Find events from UCSD STEM clubs in one palce</p>
+
+    <input type = "text" id = "searchInput" placeholder = "Search by keyword e.g. AI, robotics...">
+    <button onclick="searchEvents()">   Search</button>  
+
+    <div id = "filters">
+        <button onclick="filterEvents('workshop')">WORKSHOPS</button>
+        <button onclick="filterEvents('panel')">PANEL</button>
+        <button onclick="filterEvents('competition')">COMPETITIONS</button>
+        <button onclick="filterEvents('social')">SOCIAL</button>
+        <button onclick="filterEvents('seminar')">SEMINAR</button>
+    </div>
+
+    <div id = "results"></div>
+    <script src="script.js"></script>
+
+
+</body>
+</html>
