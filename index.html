@@ -1,29 +1,78 @@
-<!DOCTYPE html>>
-<html lang ="en">
-<head>
-    <meta charset = "UTF-8">
-    <meta name = "viewport" content = "width=device-width", initial-scale = 1.0">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" , initial-scale="1.0" />
     <title>UCSD Club Events Hub</title>
-    <link rel = "stylesheet" href ="styles.css">
-</head>
-<body>
-    <h1>UCSD Club Events Hub</h1>
-    <p>Find events from UCSD STEM clubs in one palce</p>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="search-section">
+      <h1>STEM Student Hub: Events & Opportunities</h1>
+      <p>
+        Discover workshops, competitions, and seminars from across all UCSD
+        Science and Engineering organizations
+      </p>
 
-    <input type = "text" id = "searchInput" placeholder = "Search by keyword e.g. AI, robotics...">
-    <button onclick="searchEvents()">   Search</button>  
-
-    <div id = "filters">
-        <button onclick="filterEvents('workshop')">WORKSHOPS</button>
-        <button onclick="filterEvents('panel')">PANEL</button>
-        <button onclick="filterEvents('competition')">COMPETITIONS</button>
-        <button onclick="filterEvents('social')">SOCIAL</button>
-        <button onclick="filterEvents('seminar')">SEMINAR</button>
+      <div class="search-bar-row">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search by keyword e.g. AI, robotics..."
+        />
+        <button onclick="searchEvents()">Search</button>
+      </div>
     </div>
 
-    <div id = "results"></div>
+    <div class="section-container">
+      <h3 class="section-title">Explore Organizations</h3>
+      <div class="club-chips-row">
+        <span class="club-tag" onclick="goToClub('ACM UCSD')">
+          <i class="fa-solid fa-users"></i>ACM UCSD
+        </span>
+        <span class="club-tag" onclick="goToClub('Triton Robotics')">
+          <i class="fa-solid fa-robot"></i>Triton Robotics
+        </span>
+        <span class="club-tag" onclick="goToClub('DS3 at UCSD')">
+          <i class="fa-solid fa-chart-simple"></i>DS3
+        </span>
+        <span class="club-tag" onclick="goToClub('Women in Computing at UCSD')">
+          <i class="fa-solid fa-laptop-code"></i>WIC
+        </span>
+      </div>
+    </div>
+
+    <div class="section-container">
+      <h3 class="section-title">Event Categories</h3>
+      <div class="category-tabs-row">
+        <div class="category-tab" onclick="filterEvents('workshop')">
+          <i class="fa-solid fa-chalkboard-user"></i>
+          <span>Workshops</span>
+        </div>
+        <div class="category-tab" onclick="filterEvents('panel')">
+          <i class="fa-solid fa-comments"></i>
+          <span>Panels</span>
+        </div>
+        <div class="category-tab" onclick="filterEvents('competition')">
+          <i class="fa-solid fa-trophy"></i>
+          <span>Competitions</span>
+        </div>
+        <div class="category-tab" onclick="filterEvents('social')">
+          <i class="fa-solid fa-ice-cream"></i>
+          <span>Socials</span>
+        </div>
+        <div class="category-tab" onclick="filterEvents('seminar')">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>Seminars</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-container">
+      <h3 class="event-section-title">Upcoming Events</h3>
+      <div id="results"></div>
+    </div>
+
     <script src="script.js"></script>
-
-
-</body>
+  </body>
 </html>

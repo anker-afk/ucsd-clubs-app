@@ -1,96 +1,468 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border_box;
-    font-family: 'Segoe UI', sans-serif;
+:root {
+  --white-color-bg: white;
+  --black-color-bg: black;
+  --ucsd-blue-color-bg: #203864;
+  --dark-blue-color-hover: #182b49;
+  --homepage-background: #f0f4f8;
+  --text-black-color: #1a1a2e;
+  --text-gray-color: #64748b;
+  --ucsd-gold-color: #c69214;
+  --discord-color: #5865f2;
+  --discord-color-hover: #4752c4;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border_box;
+  font-family: "Segoe UI", sans-serif;
 }
 
 body {
-    background-color: #f0f4f8;
-    color: #1a1a2e;
-    padding: 40px 20px;
-    max-width : 900px;
-    margin : 0 auto;
+  background-color: var(--homepage-background);
+  color: var(--text-black-color);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 40px 20px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-h1{
-    font-size: 2rem;
-    color: #003366;
-    margin-bottom : 8px;
+h1 {
+  font-size: 2rem;
+  color: var(--ucsd-blue-color-bg);
+  margin-bottom: 8px;
 }
 
-p{
-    color: #555;
-    margin-bottom: 24px;
+p {
+  color: var(--text-gray-color);
+  margin-bottom: 24px;
 }
-input{
-    width: 70%;
-    padding: 12px 16px;
-    border: 2px solid #003366;
-    border-radius : 8px;
-    font-size: 1rem;
-    outline: none;
+input {
+  width: 70%;
+  padding: 12px 16px;
+  border: 2px solid var(--ucsd-blue-color-bg);
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
 }
-button{
-    padding: 12px 20px;
-    background-color: #003366;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    margin: 4px;
+
+button {
+  padding: 12px 20px;
+  background-color: var(--ucsd-blue-color-bg);
+  color: var(--white-color-bg);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 4px;
 }
 button:hover {
-    background-color: #0055a5;
+  background-color: var(--dark-blue-color-hover);
 }
 
 #filters {
-    margin: 24px 0;
+  margin: 24px 0;
 }
 
 #results {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 24px;
 }
 
 .card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    width: calc(50% - 8px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background: var(--white-color-bg);
+  border-radius: 12px;
+  padding: 20px;
+  width: calc(50% - 8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .card h3 {
-    color: #003366;
-    margin-bottom: 8px;
+  color: var(--ucsd-blue-color-bg);
+  margin-bottom: 8px;
 }
 
 .card p {
-    font-size: 0.9rem;
-    margin-bottom: 6px;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
 }
 
 .tag {
-    display: inline-block;
-    background: #e8f0fe;
-    color: #003366;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    margin-bottom: 12px;
+  display: inline-block;
+  background: #e8f0fe;
+  color: var(--ucsd-blue-color-bg);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin-bottom: 12px;
 }
 
 .calendar-btn {
-    background-color: #0055a5;
-    color: white;
-    padding: 8px 14px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    font-size: 0.85rem;
-    margin-top: 8px;
+  background-color: var(--dark-blue-color-hover);
+  color: var(--white-color-bg);
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-top: 8px;
+}
+
+/* Quick CSS to split the empty lower canvas into a beautiful balance */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 3fr 1fr; /* 75% events feed, 25% sidebar */
+  gap: 30px;
+  margin-top: 40px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.dashboard-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-title {
+  color: var(--ucsd-blue-color-bg);
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  border-bottom: 2px solid var(--black-color-bg);
+  padding-bottom: 5px;
+}
+
+.section-container {
+  margin-top: 40px;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 25px;
+}
+
+.club-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  background-color: yellow;
+}
+
+/* --- STYLE 1: SLEEK CLUB CHIPS --- */
+.club-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.club-tag {
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: transparent;
+  color: var(--ucsd-blue-color-bg);
+  border: 1.5px solid rgba(24, 43, 73, 0.25);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.club-tag i {
+  font-size: 0.85rem;
+  color: var(--ucsd-gold-color); /* UCSD Gold icon accent */
+}
+
+.club-tag:hover {
+  border-color: var(--dark-blue-color-hover);
+  background-color: rgba(24, 43, 73, 0.04);
+  transform: translateY(-1px);
+}
+
+/* --- STYLE 2: MODERN VISUAL CATEGORIES --- */
+.category-tabs-row {
+  display: flex;
+  gap: 25px;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 15px;
+}
+
+.category-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 10px;
+  position: relative;
+  color: var(--text-gray-color); /* Clean gray for inactive states */
+  transition: all 0.2s ease;
+}
+
+.category-tab i {
+  font-size: 1.4rem; /* Prominent icon layout */
+  transition: transform 0.2s ease;
+}
+
+.category-tab span {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Modern Minimalist Active/Hover Effects */
+.category-tab:hover {
+  color: var(--dark-blue-color-hover); /* Shifts to Navy on hover */
+}
+
+.category-tab:hover i {
+  transform: translateY(-3px); /* Subtle playful lift */
+}
+
+/* Adds an elegant indicator bar under the active tab */
+.category-tab:hover::after {
+  content: "";
+  position: absolute;
+  bottom: -17px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(
+    --ucsd-gold-color
+  ); /* Premium UCSD Gold underline anchor */
+  border-radius: 2px;
+}
+
+.event-section-title {
+  color: var(--ucsd-blue-color-bg);
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  border-top: 2px solid var(--black-color-bg);
+  border-bottom: 2px solid var(--black-color-bg);
+  padding-bottom: 5px;
+  padding-top: 5px;
+  text-align: center;
+}
+
+.back-link {
+  display: block;
+  margin-bottom: 30px;
+}
+
+/* Nav Header Link */
+.profile-nav {
+  margin-bottom: 25px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ucsd-blue-color-bg);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: transform 0.2s ease;
+}
+
+.back-link:hover {
+  transform: translateX(-4px);
+  color: var(--ucsd-gold-color);
+}
+
+.club-hero {
+  background: linear-gradient(135deg, #182b49 0%, #0c182a 100%);
+  border-radius: 16px;
+  padding: 45px;
+  color: var(--white-color-bg);
+  margin-bottom: 30px;
+  box-shadow: 0 10px 25px rgba(24, 43, 73, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.club-hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.07;
+  background-image: radial-gradient(circle, #ffffff 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  position: relative;
+  z-index: 2;
+}
+
+.club-badge-avatar {
+  width: 75px;
+  height: 75px;
+  background-color: var(--ucsd-blue-color-bg);
+  border: 2px solid var(--ucsd-gold-color); /* UCSD Gold Crest Ring */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+  color: var(--ucsd-gold-color);
+}
+
+.hero-text h1 {
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+  color: var(--white-color-bg);
+}
+
+.club-category-tag {
+  background-color: rgba(198, 146, 20, 0.2);
+  color: #ffcd00;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* Two Column Content Blueprint */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 25px;
+}
+
+@media (max-width: 768px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sleek White Dashboard Cards */
+.profile-card {
+  background-color: var(--white-color-bg);
+  border-radius: 14px;
+  padding: 30px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  border: 1px solid #e2e8f0;
+}
+
+.profile-card h3 {
+  color: var(--ucsd-blue-color-bg);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 10px;
+}
+
+.club-description {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--text-gray-color);
+  margin: 0;
+}
+
+/* Modern Connection Action Buttons */
+.social-links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.web-btn {
+  background-color: var(--ucsd-blue-color-bg);
+  color: var(--white-color-bg);
+}
+
+.web-btn:hover {
+  background-color: var(--dark-blue-color-hover);
+}
+
+.ig-btn {
+  background-color: #f8fafc;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.ig-btn:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.discord-btn {
+  background-color: var(--discord-color);
+  color: var(--white-color-bg);
+}
+
+.discord-btn:hover {
+  background-color: var(--discord-color-hover);
+}
+
+/* Meta Contact Block Labels */
+.meta-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+  margin: 15px 0 2px 0;
+  font-weight: 700;
+}
+
+.meta-value {
+  font-weight: 600;
+  color: var(--ucsd-blue-color-bg);
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+}
+
+.email-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #00629b;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.email-link:hover {
+  text-decoration: underline;
+}
+
+/* Loading Placeholder State Layout */
+.loading-state {
+  text-align: center;
+  padding: 80px 0;
+  font-size: 1.2rem;
+  color: #64748b;
+  font-weight: 500;
 }

@@ -80,3 +80,27 @@ def filter_events(event_type: str):
     
     return {"results": formatted}
     
+@app.get("/club")
+def get_club(name: str):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT name, description, category, website, instagram, discord, contact_name, contact_email
+        FROM clubs
+        WHERE name ILIKE %s
+    """, (name,))
+    row = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    if not row:
+        return {"error": "Club not found"}
+    return {
+        "name": row[0],
+        "description": row[1],
+        "category": row[2],
+        "website": row[3],
+        "instagram": row[4],
+        "discord": row[5],
+        "contact_name": row[6],
+        "contact_email": row[7]
+    }
