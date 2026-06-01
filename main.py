@@ -179,7 +179,7 @@ class ClubSubmission(BaseModel):
     contact_email: EmailStr
 
 
-@app.post("/submit-event", dependencies=[Depends(require_api_key)])
+@app.post("/submit-event")
 @limiter.limit("10/minute")
 def submit_event(request: Request, event: EventSubmission):
     with get_db() as conn:
@@ -206,7 +206,7 @@ def submit_event(request: Request, event: EventSubmission):
             raise HTTPException(status_code=500, detail="Submission failed")
 
 
-@app.post("/submit-club", dependencies=[Depends(require_api_key)])
+@app.post("/submit-club")
 @limiter.limit("10/minute")
 def submit_club(request: Request, club: ClubSubmission):
     with get_db() as conn:

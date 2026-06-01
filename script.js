@@ -1,5 +1,4 @@
 const API_BASE = "http://127.0.0.1:8000";
-const API_KEY = "ucsd-clubs-secret-2026";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -267,7 +266,7 @@ async function submitEvent() {
   try {
     const data = await apiFetch("/submit-event", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "X-API-Key": API_KEY },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
     alert(data.message);
@@ -294,7 +293,7 @@ async function submitClub() {
   try {
     const data = await apiFetch("/submit-club", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "X-API-Key": API_KEY },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
     alert(data.message);
