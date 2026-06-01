@@ -1,3 +1,4 @@
+const API_BASE = "http://127.0.0.1:8000";
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
 
@@ -23,7 +24,7 @@ if (!name) {
       <i class="fa-solid fa-circle-exclamation"></i> No club specified.
     </div>`;
 } else {
-  fetch("http://127.0.0.1:8000/club?name=" + encodeURIComponent(name))
+  fetch(API_BASE + "/club?name=" + encodeURIComponent(name))
     .then((res) => {
       if (!res.ok) throw new Error("Club not found");
       return res.json();
