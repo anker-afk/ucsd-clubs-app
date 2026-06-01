@@ -1,8 +1,9 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" , initial-scale="1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UCSD Club Events Hub</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -26,20 +27,7 @@
 
     <div class="section-container">
       <h3 class="section-title">Explore Organizations</h3>
-      <div class="club-chips-row">
-        <span class="club-tag" onclick="goToClub('ACM UCSD')">
-          <i class="fa-solid fa-users"></i>ACM UCSD
-        </span>
-        <span class="club-tag" onclick="goToClub('Triton Robotics')">
-          <i class="fa-solid fa-robot"></i>Triton Robotics
-        </span>
-        <span class="club-tag" onclick="goToClub('DS3 at UCSD')">
-          <i class="fa-solid fa-chart-simple"></i>DS3
-        </span>
-        <span class="club-tag" onclick="goToClub('Women in Computing at UCSD')">
-          <i class="fa-solid fa-laptop-code"></i>WIC
-        </span>
-      </div>
+      <div class="club-chips-row" id="clubChipsRow"></div>
     </div>
 
     <div class="section-container">
@@ -72,7 +60,76 @@
       <h3 class="event-section-title">Upcoming Events</h3>
       <div id="results"></div>
     </div>
+    <!-- Submit Button -->
+<div style="text-align: center; margin: 40px 0;">
+    <button onclick="openModal()">+ Submit an Event or Club</button>
+</div>
 
+<!-- Modal Overlay -->
+<div id="submitModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; overflow-y:auto;">
+    <div style="background:white; max-width:600px; margin:40px auto; padding:40px; border-radius:16px;">
+        
+        <h2 style="color:#203864; margin-bottom:8px;">Submit to UCSD Club Hub</h2>
+        <p style="margin-bottom:24px;">Add an event or register your club.</p>
+
+        <!-- Toggle -->
+        <div style="margin-bottom:24px;">
+            <button onclick="showTab('event')" id="eventTab">Submit Event</button>
+            <button onclick="showTab('club')" id="clubTab">Register Club</button>
+        </div>
+
+        <!-- Event Form -->
+        <div id="eventForm">
+            <select id="s_club_name" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+                <option value="">Select Club</option>
+            </select>
+            <input id="s_event_name" placeholder="Event Name" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+            <textarea id="s_description" placeholder="Description" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px; height:80px;"></textarea>
+            <input id="s_venue" placeholder="Venue" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+            <label style="font-size:0.85rem; color:#203864;">Start Date & Time</label>
+            <input id="s_start_date" type="date" style="width:48%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+            <input id="s_start_time" type="time" style="width:48%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px; float:right;">
+            <label style="font-size:0.85rem; color:#203864;">End Date & Time</label>
+            <input id="s_end_date" type="date" style="width:48%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+            <input id="s_end_time" type="time" style="width:48%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px; float:right;">
+            <select id="s_event_type" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+                <option value="">Event Type</option>
+                <option value="workshop">Workshop</option>
+                <option value="panel">Panel</option>
+                <option value="seminar">Seminar</option>
+                <option value="competition">Competition</option>
+                <option value="social">Social</option>
+            </select>
+            <input id="s_submitter_name" placeholder="Your Name" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+            <input id="s_submitter_email" placeholder="Your Email" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+            <button onclick="submitEvent()" style="width:100%;">Submit Event</button>
+        </div>
+
+        <!-- Club Form -->
+        <div id="clubForm" style="display:none;">
+            <input id="c_name" placeholder="Club Name" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+            <textarea id="c_description" placeholder="Description" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px; height:80px;"></textarea>
+            <select id="c_category" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+                <option value="">Select Category</option>
+                <option value="Artificial Intelligence">Artificial Intelligence</option>
+                <option value="Cybersecurity">Cybersecurity</option>
+                <option value="Robotics">Robotics</option>
+                <option value="Data Science">Data Science</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Entrepreneurship">Entrepreneurship</option>
+                <option value="Diversity in Tech">Diversity in Tech</option>
+            </select>
+            <input id="c_website" placeholder="Website URL" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+            <input id="c_instagram" placeholder="Instagram URL" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+            <input id="c_discord" placeholder="Discord Invite Link" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+            <input id="c_contact_name" placeholder="Contact Name" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+            <input id="c_contact_email" placeholder="Contact Email" style="width:100%; padding:12px; margin-bottom:12px; border:2px solid #203864; border-radius:8px;">
+            <button onclick="submitClub()" style="width:100%;">Register Club</button>
+        </div>
+
+        <button onclick="closeModal()" style="width:100%; margin-top:12px; background:#64748b;">Cancel</button>
+    </div>
+</div>
     <script src="script.js"></script>
   </body>
 </html>
