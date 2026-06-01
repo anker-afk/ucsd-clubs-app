@@ -15,8 +15,12 @@ function showLoading() {
 }
 
 function showError(msg) {
-  document.getElementById("results").innerHTML =
-    `<p style="color:#dc2626; text-align:center;">${msg}</p>`;
+  const p = document.createElement("p");
+  p.style.cssText = "color:#dc2626; text-align:center;";
+  p.textContent = msg;
+  const container = document.getElementById("results");
+  container.innerHTML = "";
+  container.appendChild(p);
 }
 
 async function apiFetch(path, options = {}) {
@@ -82,7 +86,8 @@ function displayResults(results) {
 async function searchEvents() {
   const keyword = document.getElementById("searchInput").value.trim();
   if (!keyword) {
-    loadAllEvents();
+    document.getElementById("results").innerHTML =
+      '<p style="color:#64748b; text-align:center;">Search for an event or select a category above to get started.</p>';
     return;
   }
   showLoading();
@@ -135,7 +140,8 @@ async function loadClubChips() {
       const span = document.createElement("span");
       span.className = "club-tag";
       span.onclick = () => goToClub(club.name);
-      span.innerHTML = `<i class="fa-solid ${icon}"></i>${club.name}`;
+      span.innerHTML = `<i class="fa-solid ${icon}"></i>`;
+      span.appendChild(document.createTextNode(club.name));
       row.appendChild(span);
     });
   } catch (e) {

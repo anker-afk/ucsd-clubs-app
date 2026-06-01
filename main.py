@@ -2,7 +2,8 @@ import logging
 from fastapi import FastAPI, Depends, HTTPException, Security, Request, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security.api_key import APIKeyHeader
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator
+import re
 from typing import Optional, Literal, get_args
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
@@ -34,6 +35,11 @@ def require_api_key(key: str = Security(api_key_header)):
 
 EventType = Literal["workshop", "panel", "seminar", "competition", "social"]
 VALID_EVENT_TYPES = set(get_args(EventType))
+
+ClubCategory = Literal[
+    "Artificial Intelligence", "Cybersecurity", "Robotics",
+    "Data Science", "Computer Science", "Entrepreneurship", "Diversity in Tech"
+]
 
 def format_row(row):
     return {
@@ -168,10 +174,24 @@ class EventSubmission(BaseModel):
     submitter_name: str
     submitter_email: EmailStr
 
+    @field_validator("start_date", "end_date")
+    @classmethod
+    def validate_date(cls, v):
+        if not re.match(r"^\d{4}-\d{2}-\d{2}$", v):
+            raise ValueError("must be YYYY-MM-DD")
+        return v
+
+    @field_validator("start_time", "end_time")
+    @classmethod
+    def validate_time(cls, v):
+        if not re.match(r"^\d{2}:\d{2}(:\d{2})?$", v):
+            raise ValueError("must be HH:MM")
+        return v
+
 class ClubSubmission(BaseModel):
     name: str
     description: str
-    category: str
+    category: ClubCategory
     website: Optional[str] = None
     instagram: Optional[str] = None
     discord: Optional[str] = None
