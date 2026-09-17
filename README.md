@@ -198,10 +198,8 @@ ucsd-clubs-app/
 - [x] API key authentication on write endpoints
 - [x] Rate limiting on all endpoints
 - [x] Connection pooling
-- [x] Google Calendar integration
+- [ ] Google Calendar integration
 - [x] Paginated API responses
 - [ ] Deployment
 
-## Team
 
-Built by UCSD students as part of the SP26 Programming for Tritons project.
