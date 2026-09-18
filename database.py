@@ -1,24 +1,16 @@
 import psycopg2
-from psycopg2 import pool
-from contextlib import contextmanager
+import os
 
-_pool = psycopg2.pool.ThreadedConnectionPool(
-    minconn=2,
-    maxconn=10,
-    dbname="ucsd_clubs",
-    user="smritiattam",
-    password="",
-    host="localhost",
-    port="5432"
-)
-
-@contextmanager
-def get_db():
-    conn = _pool.getconn()
-    try:
-        yield conn
-    except Exception:
-        conn.rollback()
-        raise
-    finally:
-        _pool.putconn(conn)
+def get_connection():
+    database_url = os.getenv("postgresql://database_zfnc_user:FJpcdf17vVUEesh758yion3f2vUPz7sI@dpg-dam7p6rm8hqs73cqp1l0-a/database_zfnc")
+    if database_url:
+        conn = psycopg2.connect(database_url)
+    else:
+        conn = psycopg2.connect(
+            dbname="ucsd_clubs",
+            user="smritiattam",
+            password="",
+            host="localhost",
+            port="5432"
+        )
+    return conn
