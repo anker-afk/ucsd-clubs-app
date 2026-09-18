@@ -2,7 +2,7 @@ import psycopg2
 import os
 
 def get_connection():
-    database_url = os.getenv("database_url")
+    database_url = os.getenv("DATABASE_URL")
     if database_url:
         conn = psycopg2.connect(database_url)
     else:
