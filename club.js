@@ -1,4 +1,4 @@
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = "https://ucsd-club-events.onrender.com";
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
 
