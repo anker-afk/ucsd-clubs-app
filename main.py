@@ -8,7 +8,7 @@ from typing import Optional, Literal, get_args
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-from database import get_db
+from database import get_connection
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
@@ -62,7 +62,7 @@ def read_root():
 @limiter.limit("60/minute")
 def get_events(request: Request, page: int = Query(1, ge=1), limit: int = Query(20, ge=1, le=100)):
     offset = (page - 1) * limit
-    with get_db() as conn:
+    with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("""
             SELECT clubs.name, events.name, events.event_type, events.venue,
@@ -87,7 +87,7 @@ def get_events(request: Request, page: int = Query(1, ge=1), limit: int = Query(
 @app.get("/clubs")
 @limiter.limit("60/minute")
 def get_clubs(request: Request):
-    with get_db() as conn:
+    with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT id, name, category FROM clubs WHERE is_approved = TRUE ORDER BY name")
         rows = cursor.fetchall()
@@ -99,7 +99,7 @@ def get_clubs(request: Request):
 def search_clubs(request: Request, keyword: str, page: int = Query(1, ge=1), limit: int = Query(20, ge=1, le=100)):
     offset = (page - 1) * limit
     pattern = f"%{keyword}%"
-    with get_db() as conn:
+    with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("""
             SELECT clubs.name, events.name, events.event_type, events.venue,
@@ -122,7 +122,7 @@ def filter_events(request: Request, event_type: str, page: int = Query(1, ge=1),
     if event_type not in VALID_EVENT_TYPES:
         raise HTTPException(status_code=400, detail=f"Invalid event_type. Must be one of: {', '.join(VALID_EVENT_TYPES)}")
     offset = (page - 1) * limit
-    with get_db() as conn:
+    with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("""
             SELECT clubs.name, events.name, events.event_type, events.venue,
@@ -142,7 +142,7 @@ def filter_events(request: Request, event_type: str, page: int = Query(1, ge=1),
 @app.get("/club")
 @limiter.limit("60/minute")
 def get_club(request: Request, name: str):
-    with get_db() as conn:
+    with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("""
             SELECT name, description, category, website, instagram, discord, contact_name, contact_email
@@ -202,7 +202,7 @@ class ClubSubmission(BaseModel):
 @app.post("/submit-event")
 @limiter.limit("10/minute")
 def submit_event(request: Request, event: EventSubmission):
-    with get_db() as conn:
+    with get_connection() as conn:
         cursor = conn.cursor()
         try:
             cursor.execute("SELECT id FROM clubs WHERE name ILIKE %s AND is_approved = TRUE", (event.club_name,))
@@ -229,7 +229,7 @@ def submit_event(request: Request, event: EventSubmission):
 @app.post("/submit-club")
 @limiter.limit("10/minute")
 def submit_club(request: Request, club: ClubSubmission):
-    with get_db() as conn:
+    with get_connection() as conn:
         cursor = conn.cursor()
         try:
             cursor.execute("SELECT id FROM clubs WHERE name ILIKE %s", (club.name,))
@@ -255,7 +255,7 @@ def submit_club(request: Request, club: ClubSubmission):
 
 @app.get("/admin/pending-events", dependencies=[Depends(require_api_key)])
 def pending_events():
-    with get_db() as conn:
+    with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("""
             SELECT events.id, clubs.name, events.name, events.event_type,
@@ -276,7 +276,7 @@ def pending_events():
 
 @app.get("/admin/pending-clubs", dependencies=[Depends(require_api_key)])
 def pending_clubs():
-    with get_db() as conn:
+    with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("""
             SELECT id, name, description, category, website, contact_name, contact_email, created_at
@@ -294,7 +294,7 @@ def pending_clubs():
 
 @app.post("/admin/approve-event/{event_id}", dependencies=[Depends(require_api_key)])
 def approve_event(event_id: int):
-    with get_db() as conn:
+    with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("UPDATE events SET is_approved = TRUE WHERE id = %s", (event_id,))
         if cursor.rowcount == 0:
@@ -306,7 +306,7 @@ def approve_event(event_id: int):
 
 @app.post("/admin/reject-event/{event_id}", dependencies=[Depends(require_api_key)])
 def reject_event(event_id: int):
-    with get_db() as conn:
+    with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM events WHERE id = %s AND is_approved = FALSE", (event_id,))
         if cursor.rowcount == 0:
@@ -318,7 +318,7 @@ def reject_event(event_id: int):
 
 @app.post("/admin/approve-club/{club_id}", dependencies=[Depends(require_api_key)])
 def approve_club(club_id: int):
-    with get_db() as conn:
+    with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("UPDATE clubs SET is_approved = TRUE WHERE id = %s", (club_id,))
         if cursor.rowcount == 0:
@@ -330,7 +330,7 @@ def approve_club(club_id: int):
 
 @app.post("/admin/reject-club/{club_id}", dependencies=[Depends(require_api_key)])
 def reject_club(club_id: int):
-    with get_db() as conn:
+    with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM clubs WHERE id = %s AND is_approved = FALSE", (club_id,))
         if cursor.rowcount == 0:
